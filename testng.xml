@@ -1,0 +1,23 @@
+<suite name="Project TestSuite" parallel="classes">
+    <test name="ORM Login Test cases">
+        <parameter name="browser" value="chrome"></parameter>
+        <parameter name="browser" value="firefox"></parameter>
+        <classes>
+            <class name="OrangeHRMTestClasses.OrangeHRMLoginTest"></class>
+        </classes>
+    </test>
+    <test name="ORM Admin Page Test cases">
+        <parameter name="browser" value="chrome"></parameter>
+        <parameter name="browser" value="firefox"></parameter>
+        <classes>
+            <class name="OrangeHRMTestClasses.OrangeHRMAdminTest"></class>
+        </classes>
+       </test>
+    <test name="ORM Leave Page Test cases">
+        <parameter name="browser" value="chrome"></parameter>
+        <parameter name="browser" value="firefox"></parameter>
+        <classes>
+            <class name="OrangeHRMTestClasses.OrangeHRMLeaveTest"></class>
+        </classes>
+    </test>
+</suite>
