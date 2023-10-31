@@ -30,7 +30,7 @@
           </classes>
       </test>
       <test name="ORM Leave Page Test cases-firefox">
-          <parameter name="browser" value="chrome"></parameter>
+          <parameter name="browser" value="firefox"></parameter>
           <classes>
               <class name="OrangeHRMTestClasses.OrangeHRMLeaveTest"></class>
           </classes>
