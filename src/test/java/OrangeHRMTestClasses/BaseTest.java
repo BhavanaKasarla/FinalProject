@@ -28,7 +28,7 @@ public class BaseTest {
     public String baseUrl = "https://opensource-demo.orangehrmlive.com";
 
     public void setUpBrowser(Logger log, String browser) {
-        log.info("Browser to use : " + browser);
+        log.info("*******************Browser to use : " + browser);
         if (browser.equalsIgnoreCase("chrome")) {
             driver = new ChromeDriver();
         } else if (browser.equalsIgnoreCase("firefox")) {

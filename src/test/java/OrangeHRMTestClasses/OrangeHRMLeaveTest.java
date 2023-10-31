@@ -40,6 +40,7 @@ public class OrangeHRMLeaveTest extends BaseTest {
     public void testResetSuccessfull() throws InterruptedException {
         // Create a new Test section inside the Extent Report
         test = extent.createTest("Verify rest button on the top search panel works");
+        log.info("*************checking reset button in leaves page works" );
 
         OrangeHRMLeavePage.clickLeavePage(driver);
         Thread.sleep(2000);
@@ -70,7 +71,8 @@ public class OrangeHRMLeaveTest extends BaseTest {
     @Test
     public void testSearchForLeaveType() throws InterruptedException {
         // Create a new Test section inside the Extent Report
-        test = extent.createTest("Verify that search button on the top search panel works");
+        test = extent.createTest("Verify that search button on the top search panel works for leave type");
+        log.info("*************checking search button by leave type works" );
 
         OrangeHRMLeavePage.clickLeavePage(driver);
         Thread.sleep(2000);
@@ -92,7 +94,8 @@ public class OrangeHRMLeaveTest extends BaseTest {
     @Test
     public void testSearchForEmployeeName() throws InterruptedException {
         // Create a new Test section inside the Extent Report
-        test = extent.createTest("Verify that search button on the top search panel works");
+        test = extent.createTest("Verify that search button on the top search panel works for employee name search");
+        log.info("*************checking search button by employee name works" );
 
         OrangeHRMLeavePage.clickLeavePage(driver);
         Thread.sleep(2000);

@@ -10,7 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
 
-public class OrangeHRMLeavePage {
+public class OrangeHRMLeavePage extends BasePage {
     public static WebElement element = null;
 
     // Locators of the Elements present in this page
@@ -91,7 +91,6 @@ public class OrangeHRMLeavePage {
         }
         log.info("From day to be entered: " + fromDay);
         pickDateFromCalendar(driver, fromDay);
-
     }
 
     public static void enterToDate(WebDriver driver, String toDay, String year) throws InterruptedException {
@@ -125,17 +124,14 @@ public class OrangeHRMLeavePage {
         // Get the date dropdown from the calender popup
         element = driver.findElement(By.xpath("//div[contains(@class,'year-selected')]"));
 
-        // click to open the year dropdown in the calender
-        Actions action = new Actions(driver);
-        action.moveToElement(element).click().perform();
+        clickWhenReady(driver, element, 3000);
         Thread.sleep(2000);
 
         // select the year you want
         WebElement yearOption = driver.findElement(
                 By.xpath("//ul[contains(@class,'calendar-dropdown')]//li[text()='"+year+"']"));
-        action.moveToElement(yearOption).click().perform();
+        clickWhenReady(driver, yearOption, 2000);
         Thread.sleep(2000);
-        // yearOption.click();
 
         log.info("Year picked from calender: " + year);
     }
@@ -145,18 +141,19 @@ public class OrangeHRMLeavePage {
         element.sendKeys(Keys.PAGE_UP);
         element.clear();
         element.sendKeys(employeeName);
-        //log.info("Employee name typed as: " + employeeName);
+        log.info("Employee name typed as: " + employeeName);
         Thread.sleep(2000);
 
         // Get the Suggestion ul element
         WebElement ulElement = element.findElement(By.xpath("//div[contains(@class,'autocomplete-dropdown')]"));
+        log.info("Searching for employee name : "+employeeName);
+        Thread.sleep(2000);
 
         // Get the list of all the li elements under the employee name element
         List<WebElement> liElements = ulElement.findElements(By.xpath("//div[@class='oxd-autocomplete-option']/span"));
         log.info(liElements.size());
 
         for (WebElement searchElement : liElements) {
-            log.info(searchElement.getText());
             if (searchElement.getText().toLowerCase().contains(employeeName.toLowerCase())) {
                 log.info("Selected employee name : " + searchElement.getText());
                 searchElement.click();
