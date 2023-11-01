@@ -44,6 +44,7 @@ public class OrangeHRMAdminTest extends BaseTest {
     public void testResetSuccessfull() throws InterruptedException {
         // Create a new Test section inside the Extent Report
         test = extent.createTest("Verify rest button on the top search panel works");
+        log.info("*************checking reset button on admin page works" );
 
         OrangeHRMAdminPage.enterUserName(driver, "Admin");
         Thread.sleep(2000);
@@ -65,6 +66,7 @@ public class OrangeHRMAdminTest extends BaseTest {
     public void testSearchSuccessfully() throws InterruptedException {
         // Create a new Test section inside the Extent Report
         test = extent.createTest("Verify that search button on the top search panel works");
+        log.info("*************checking search button works for user name and user role" );
 
         String userName = "Admin";
         String userRole = "Admin";
@@ -89,12 +91,14 @@ public class OrangeHRMAdminTest extends BaseTest {
     public void testDeleteSuccessfully() throws InterruptedException {
         // Create a new Test section inside the Extent Report
         test = extent.createTest("Verify that delete button on the search result rows works");
+        log.info("*************checking delete button by user role works" );
 
         String userRole = "ESS";
         OrangeHRMAdminPage.enterUserRole(driver, userRole);
         Thread.sleep(2000);
 
         OrangeHRMAdminPage.clickSearch(driver);
+        Thread.sleep(2000);
         // remove 1 as header info is also counted in the row count
         boolean deletedFirstRecord = OrangeHRMAdminPage.checkDeleteFirstRecord(driver, userRole);
 

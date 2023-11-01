@@ -184,7 +184,7 @@ public class OrangeHRMLeavePage extends BasePage {
         // click on the user role you want from the dropdown
         WebElement customOptionValue = driver.findElement(
                 By.xpath("//span[contains(text(),'"+ subOption +"')]"));
-        customOptionValue.click();
+        clickWhenReady(driver, customOptionValue, 2000);
     }
     public static void togglePastEmployeeSwitch(WebDriver driver ) {
         element = pastEmployeeSwitchField(driver);
