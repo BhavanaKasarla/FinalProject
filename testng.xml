@@ -1,38 +1,18 @@
-<suite name="Project TestSuite" parallel="classes">
-      <test name="ORM Login Test cases-chrome">
-          <parameter name="browser" value="chrome"></parameter>
-          <classes>
-              <class name="OrangeHRMTestClasses.OrangeHRMLoginTest"></class>
-          </classes>
-      </test>
-      <test name="ORM Login Test cases-firefox">
-          <parameter name="browser" value="firefox"></parameter>
-          <classes>
-              <class name="OrangeHRMTestClasses.OrangeHRMLoginTest"></class>
-          </classes>
-      </test>
-      <test name="ORM Admin Page Test cases-chrome">
-          <parameter name="browser" value="chrome"></parameter>
-          <classes>
-              <class name="OrangeHRMTestClasses.OrangeHRMAdminTest"></class>
-          </classes>
-      </test>
-      <test name="ORM Admin Page Test cases-firefox">
-          <parameter name="browser" value="firefox"></parameter>
-          <classes>
-              <class name="OrangeHRMTestClasses.OrangeHRMAdminTest"></class>
-          </classes>
-      </test>
-      <test name="ORM Leave Page Test cases-chrome">
-          <parameter name="browser" value="chrome"></parameter>
-          <classes>
-              <class name="OrangeHRMTestClasses.OrangeHRMLeaveTest"></class>
-          </classes>
-      </test>
-      <test name="ORM Leave Page Test cases-firefox">
-          <parameter name="browser" value="firefox"></parameter>
-          <classes>
-              <class name="OrangeHRMTestClasses.OrangeHRMLeaveTest"></class>
-          </classes>
-      </test>
-  </suite>
+<suite name="Project TestSuite"   parallel="classes">
+    <test name="ORM website Test cases-chrome">
+        <parameter name="browser" value="chrome"></parameter>
+        <classes>
+            <class name="OrangeHRMTestClasses.OrangeHRMLoginTest"></class>
+            <class name="OrangeHRMTestClasses.OrangeHRMAdminTest"></class>
+            <class name="OrangeHRMTestClasses.OrangeHRMLeaveTest"></class>
+        </classes>
+    </test>
+    <test name="ORM website Test cases-firefox">
+        <parameter name="browser" value="firefox"></parameter>
+        <classes>
+            <class name="OrangeHRMTestClasses.OrangeHRMLoginTest"></class>
+            <class name="OrangeHRMTestClasses.OrangeHRMAdminTest"></class>
+            <class name="OrangeHRMTestClasses.OrangeHRMLeaveTest"></class>
+        </classes>
+    </test>
+</suite>

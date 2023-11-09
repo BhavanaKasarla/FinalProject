@@ -13,51 +13,58 @@ import java.time.Duration;
 
 public class OrangeHRMLoginTest extends BaseTest {
     private static final Logger log = LogManager.getLogger(OrangeHRMLoginPage.class.getName());
+    private String userName;
+    private String password;
 
     @BeforeClass
     @Parameters("browser")
     public void setup(String browser) {
         setUpBrowser(log, browser);
-
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
-
-        initializeExtentReport();
+        driver.get(baseUrl);
     }
 
     @Test
     public void testLoginSucessfull() throws InterruptedException {
         // Create a new Test section inside the Extent Report
-        test = extent.createTest("Verify Login positive case");
+        test = extent.createTest("Login Page: Verify Login positive case");
 
         driver.get(baseUrl);
 
+        userName = "Admin";
+        password = "admin123";
+
         // Correct login info to check positive case
-        OrangeHRMLoginPage.enterUserName(driver, "Admin");
+        OrangeHRMLoginPage.enterUserName(driver, userName);
         Thread.sleep(2000);
-        OrangeHRMLoginPage.enterPassword(driver, "admin123");
+        OrangeHRMLoginPage.enterPassword(driver, password);
         Thread.sleep(2000);
         OrangeHRMLoginPage.clickLogin(driver);
+
+        test.log(Status.INFO, "Login button clicked with user name: "+ userName+" and password:"+ password);
 
         // login success if u can see the dashboard screen
         boolean dashboardVisible = OrangeHRMLoginPage.dashboardLinkVisibleCheck(driver);
         Assert.assertTrue(dashboardVisible);
-        test.log(Status.INFO, "Dashboard can be seen after login:" + dashboardVisible);
+        test.log(Status.INFO, "Dashboard can be seen after valid login:" + dashboardVisible);
     }
 
     @Test
     public void testLoginFailedWrongPassword() throws InterruptedException {
-        // Create a new Test section inside the Extent Report
-        test = extent.createTest("Verify Login incorrect password case");
+        test = extent.createTest("Login Page: Verify Login incorrect password case");
         driver.get(baseUrl);
 
+        userName = "Admin";
+        password = "admin12";
+
         // incorrect password to check negative case
-        OrangeHRMLoginPage.enterUserName(driver, "Admin");
+        OrangeHRMLoginPage.enterUserName(driver, userName);
         Thread.sleep(2000);
         // password is incorrect
-        OrangeHRMLoginPage.enterPassword(driver, "admin12");
+        OrangeHRMLoginPage.enterPassword(driver, password);
         Thread.sleep(2000);
         OrangeHRMLoginPage.clickLogin(driver);
+
+        test.log(Status.INFO, "Login button clicked with user name: "+ userName+" and password:"+ password);
 
         checkInvalidLoginMessage();
     }
@@ -65,15 +72,19 @@ public class OrangeHRMLoginTest extends BaseTest {
     @Test
     public void testLoginFailedWrongUsername() throws InterruptedException {
         // Create a new Test section inside the Extent Report
-        test = extent.createTest("Verify Login incorrect username case");
+        test = extent.createTest("Login Page: Verify Login incorrect username case");
         driver.get(baseUrl);
 
+        userName = "Admi";
+        password = "admin123";
+
         // incorrect username to check negative case
-        OrangeHRMLoginPage.enterUserName(driver, "Admi");
+        OrangeHRMLoginPage.enterUserName(driver, userName);
         Thread.sleep(2000);
-        OrangeHRMLoginPage.enterPassword(driver, "admin123");
+        OrangeHRMLoginPage.enterPassword(driver, password);
         Thread.sleep(2000);
         OrangeHRMLoginPage.clickLogin(driver);
+        test.log(Status.INFO, "Login button clicked with user name: "+ userName+" and password:"+ password);
 
         checkInvalidLoginMessage();
     }
@@ -81,15 +92,19 @@ public class OrangeHRMLoginTest extends BaseTest {
     @Test
     public void testLoginFailedWrongUsernameAndPassword() throws InterruptedException {
         // Create a new Test section inside the Extent Report
-        test = extent.createTest("Verify Login incorrect username and password case");
+        test = extent.createTest("Login Page: Verify Login incorrect username and password case");
         driver.get(baseUrl);
 
+        userName = "Admi";
+        password = "admin12";
+
         // incorrect username and password to check negative case
-        OrangeHRMLoginPage.enterUserName(driver, "Admi");
+        OrangeHRMLoginPage.enterUserName(driver, userName);
         Thread.sleep(2000);
-        OrangeHRMLoginPage.enterPassword(driver, "admin12");
+        OrangeHRMLoginPage.enterPassword(driver, password);
         Thread.sleep(2000);
         OrangeHRMLoginPage.clickLogin(driver);
+        test.log(Status.INFO, "Login button clicked with user name: "+ userName+" and password:"+ password);
 
         checkInvalidLoginMessage();
     }
@@ -97,40 +112,46 @@ public class OrangeHRMLoginTest extends BaseTest {
     @Test
     public void testForgotPasswordLink() throws InterruptedException {
         // Create a new Test section inside the Extent Report
-        test = extent.createTest("Verify forgot password link positive case");
+        test = extent.createTest("Login Page: Verify forgot password link positive case");
 
-        driver.get(baseUrl);
+       driver.get(baseUrl);
 
+        userName = "Admin";
         // Correct login info to check positive case
-        OrangeHRMLoginPage.enterUserName(driver, "Admin");
+        OrangeHRMLoginPage.enterUserName(driver, userName);
         Thread.sleep(2000);
         OrangeHRMLoginPage.clickForgotPassword(driver);
+        test.log(Status.INFO, "Forgot password link clicked with user name: "+ userName);
 
         OrangeHRMLoginPage.enterUserName(driver, "Admin");
         Thread.sleep(2000);
         OrangeHRMLoginPage.resetPasswordButton(driver);
+        test.log(Status.INFO, "On popup window, reset password button clicked with user name: "+ userName);
 
-        // login success if u can see the dashboard screen
         boolean resetEmailMessageVisible = OrangeHRMLoginPage.resetPWDEmailMessageCheck(driver);
         Assert.assertTrue(resetEmailMessageVisible);
-        test.log(Status.INFO, "Reset email message is visible after password reset button click:" + resetEmailMessageVisible);
+        test.log(Status.INFO, "Reset email message alert is visible after password reset button click: "
+                             + resetEmailMessageVisible);
     }
 
     @Test
     public void testForgotPasswordLinkCancelButton() throws InterruptedException {
         // Create a new Test section inside the Extent Report
-        test = extent.createTest("Verify forgot password link positive case");
+        test = extent.createTest("Login Page: Verify forgot password link positive case");
 
         driver.get(baseUrl);
 
-        // Correct login info to check positive case
-        OrangeHRMLoginPage.enterUserName(driver, "Admin");
+        userName = "Admin";
+        // Correct login info
+        OrangeHRMLoginPage.enterUserName(driver, userName);
         Thread.sleep(2000);
         OrangeHRMLoginPage.clickForgotPassword(driver);
+        test.log(Status.INFO, "Forgot password link clicked with user name: "+ userName);
 
-        OrangeHRMLoginPage.enterUserName(driver, "Admin");
+        OrangeHRMLoginPage.enterUserName(driver, userName);
         Thread.sleep(2000);
         OrangeHRMLoginPage.cancelPasswordResetButton(driver);
+        test.log(Status.INFO, "On popup window, cancel password reset button clicked with user name: "+ userName);
 
         // login success if u can see the dashboard screen
         boolean backToLoginPage = OrangeHRMLoginPage.forgotPasswordLinkVisibleCheck(driver);

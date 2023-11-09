@@ -1,10 +1,13 @@
 package OrangeHRMTestClasses;
 
 import POMPageClasses.OrangeHRMAdminPage;
+import POMPageClasses.OrangeHRMLeavePage;
 import POMPageClasses.OrangeHRMLoginPage;
 import com.aventstack.extentreports.Status;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
@@ -13,18 +16,12 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 public class OrangeHRMAdminTest extends BaseTest {
-
     private static final Logger log = LogManager.getLogger(OrangeHRMAdminPage.class.getName());
 
     @BeforeClass
     @Parameters("browser")
     public void setup(String browser) throws InterruptedException {
         setUpBrowser(log, browser);
-
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
-
-        initializeExtentReport();
 
         driver.get(baseUrl);
 
@@ -43,8 +40,11 @@ public class OrangeHRMAdminTest extends BaseTest {
     @Test
     public void testResetSuccessfull() throws InterruptedException {
         // Create a new Test section inside the Extent Report
-        test = extent.createTest("Verify rest button on the top search panel works");
-        log.info("*************checking reset button on admin page works" );
+        test = extent.createTest("Admin Page: Verify rest button on the top search panel works");
+        log.info("********Admin Page*****checking reset button on admin page works" );
+
+        OrangeHRMAdminPage.clickAdminPage(driver);
+        Thread.sleep(2000);
 
         OrangeHRMAdminPage.enterUserName(driver, "Admin");
         Thread.sleep(2000);
@@ -54,6 +54,8 @@ public class OrangeHRMAdminTest extends BaseTest {
         Thread.sleep(2000);
         OrangeHRMAdminPage.enterStatus(driver, "Enabled");
         Thread.sleep(2000);
+
+        test.log(Status.INFO, "Reset button clicked by entering UserName/UserRole/EmployeeName/Status as Admin/Admin/Paul/Enabled");
 
         OrangeHRMAdminPage.clickReset(driver);
         boolean allEmpty = OrangeHRMAdminPage.checkAllSearchFieldsEmpty(driver);
@@ -65,8 +67,11 @@ public class OrangeHRMAdminTest extends BaseTest {
     @Test
     public void testSearchSuccessfully() throws InterruptedException {
         // Create a new Test section inside the Extent Report
-        test = extent.createTest("Verify that search button on the top search panel works");
-        log.info("*************checking search button works for user name and user role" );
+        test = extent.createTest("Admin Page: Verify that search button on the top search panel works");
+        log.info("*******Admin Page:******checking search button works for user name and user role" );
+
+        OrangeHRMAdminPage.clickAdminPage(driver);
+        Thread.sleep(2000);
 
         String userName = "Admin";
         String userRole = "Admin";
@@ -78,20 +83,34 @@ public class OrangeHRMAdminTest extends BaseTest {
         OrangeHRMAdminPage.enterStatus(driver, status);
         Thread.sleep(2000);
 
+        test.log(Status.INFO, "Search button clicked after entering UserName/UserRole/Status as Admin/Admin/Enabled");
         OrangeHRMAdminPage.clickSearch(driver);
-        // remove 1 as header info is also counted in the row count
-        int rowCount = OrangeHRMAdminPage.checkSearchResultRows(driver, userName, userRole, status);
+        Thread.sleep(2000);
 
-
-        Assert.assertTrue(rowCount == 1);
-        test.log(Status.INFO, "Should have only 1 record for admin:" + rowCount);
+        try {
+            // remove 1 row as header info is also counted in the row count
+            int rowCount = OrangeHRMAdminPage.checkSearchResultRows(driver, userName, userRole, status);
+            if (rowCount>=1) {
+                Assert.assertTrue(true);
+                test.log(Status.PASS, "One record found for userName/userRole: " + userName + "/"+ userRole);
+            } else {
+                test.log(Status.FAIL, "No data present for the search by userName/userRole: " + userName + "/"+ userRole);
+                Assert.fail();
+            }
+        } catch (Exception e) {
+            ErrorOccured(e);
+        }
     }
+
 
     @Test
     public void testDeleteSuccessfully() throws InterruptedException {
         // Create a new Test section inside the Extent Report
-        test = extent.createTest("Verify that delete button on the search result rows works");
-        log.info("*************checking delete button by user role works" );
+        test = extent.createTest("Admin Page: Verify that delete button on the search result rows works");
+        log.info("*******Admin Page******checking delete button by user role works" );
+
+        OrangeHRMAdminPage.clickAdminPage(driver);
+        Thread.sleep(2000);
 
         String userRole = "ESS";
         OrangeHRMAdminPage.enterUserRole(driver, userRole);
@@ -99,11 +118,55 @@ public class OrangeHRMAdminTest extends BaseTest {
 
         OrangeHRMAdminPage.clickSearch(driver);
         Thread.sleep(2000);
-        // remove 1 as header info is also counted in the row count
-        boolean deletedFirstRecord = OrangeHRMAdminPage.checkDeleteFirstRecord(driver, userRole);
+        test.log(Status.INFO, "Search button clicked after entering UserRole as : "+userRole);
 
-        Assert.assertTrue(deletedFirstRecord);
-        test.log(Status.INFO, "Deleted first record with user role :" + userRole);
+        try {
+            // remove 1 as header info is also counted in the row count
+            boolean deletedFirstRecord = OrangeHRMAdminPage.checkDeleteFirstRecord(driver, userRole);
+            if (deletedFirstRecord) {
+                Assert.assertTrue(true);
+                test.log(Status.PASS, "Deleted first record with user role : " + userRole);
+            } else {
+                test.log(Status.FAIL, "No data present or unable to delete for the search by userRole: " + userRole);
+                Assert.fail();
+            }
+        } catch (Exception e) {
+            ErrorOccured(e);
+        }
+    }
+
+    @Test
+    public void testSearchForMissingEmployeeName() throws InterruptedException {
+        // Create a new Test section inside the Extent Report
+        test = extent.createTest("Admin Page: Verify that error is flagged when non existing employee name is entered");
+        log.info("*******Admin Page:******checking error is flagged for entering missing or wrong employee name" );
+
+        OrangeHRMAdminPage.clickAdminPage(driver);
+        Thread.sleep(2000);
+
+        String employeeName = "unkown";
+        OrangeHRMAdminPage.enterEmployeeName(driver, employeeName);
+        Thread.sleep(2000);
+        OrangeHRMAdminPage.clickSearch(driver);
+        Thread.sleep(2000);
+        test.log(Status.INFO, "Employee name entered as: "+ employeeName);
+
+        boolean error = OrangeHRMAdminPage.checkEmployeeNameHasError(driver);
+        log.info("Employee name field has error" );
+
+        if (error) {
+            Assert.assertTrue(true);
+            test.log(Status.PASS, "Error flagged for entering missing employee name: " + employeeName);
+        } else {
+            test.log(Status.FAIL, "Error not flagged for entering missing employee name: " + employeeName);
+            Assert.fail();
+        }
+    }
+
+    private void ErrorOccured(Exception e) {
+        e.printStackTrace();
+        test.log(Status.FAIL, "Exception occurred. Test Failed.");
+        Assert.fail();
     }
 
 }

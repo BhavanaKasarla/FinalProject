@@ -20,6 +20,7 @@ public class OrangeHRMLeavePage extends BasePage {
     private static final String LEAVE_STATUS_FIELD = "//label[contains(text(),'Status')]//ancestor::div[contains(@class,'input-group')]//div[contains(@class,'text-input')]";
     private static final String LEAVE_TYPE_FIELD = "//label[contains(text(),'Leave Type')]//ancestor::div[contains(@class,'input-group')]//div[contains(@class,'text-input')]";
     private static final String EMPLOYEE_NAME_FIELD = "//input[contains(@placeholder, 'Type for hints')]";
+    private static final String EMPLOYEE_NAME_ERROR = "//span[contains(@class,'error')]";
     private static final String SUB_UNIT_FIELD = "//label[contains(text(),'Sub')]//ancestor::div[contains(@class,'input-group')]//div[contains(@class,'text-input')]";
     private static final String PAST_EMPLOYEE_SWITCH_FIELD = "//div[contains(@class,'switch')]//input[contains(@type,'checkbox')]";
     private static final String SEARCH_BUTTON = "//button[contains(@type, 'submit')]";
@@ -73,6 +74,20 @@ public class OrangeHRMLeavePage extends BasePage {
     public static WebElement resetButton(WebDriver driver) {
         element = driver.findElement(By.xpath(RESET_BUTTON));
         return element;
+    }
+
+    public static WebElement employeeNameError(WebDriver driver) {
+        element = driver.findElement(By.xpath(EMPLOYEE_NAME_ERROR));
+        return element;
+    }
+
+    public static boolean checkEmployeeNameHasError(WebDriver driver) {
+        WebElement element = employeeNameError(driver);
+
+        if (element != null) {
+            return true;
+        }
+        return false;
     }
 
     public static void clickLeavePage(WebDriver driver) {
@@ -275,15 +290,16 @@ public class OrangeHRMLeavePage extends BasePage {
     }
 
     public static int checkSearchResultRows(WebDriver driver, String searchValue, int searchCellIndex) {
-
+        // Find all the rows under the table
         List<WebElement> rowWebElements = getRowWebElements(driver);
 
         int searchResultRows = 0;
         for (WebElement rowWebElement : rowWebElements) {
-            // Find all the rows under the table
+            // Find all the cells under the table
             List<WebElement> cellWebElements = rowWebElement.findElements(By.xpath("//div[contains(@class,'table-cell')]/div"));
 
-            if (cellWebElements.get(searchCellIndex).getText().toLowerCase().contains(searchValue.toLowerCase()))
+            if (cellWebElements.size() >0 &&
+                    cellWebElements.get(searchCellIndex).getText().toLowerCase().contains(searchValue.toLowerCase()))
             {
                 // this search result matches the search criteria
                 searchResultRows++;
