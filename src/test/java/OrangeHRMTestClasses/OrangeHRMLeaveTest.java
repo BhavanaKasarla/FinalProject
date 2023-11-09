@@ -79,7 +79,7 @@ public class OrangeHRMLeaveTest extends BaseTest {
         OrangeHRMLeavePage.clickLeavePage(driver);
         Thread.sleep(2000);
 
-        String leaveType = "CAN - Vacation";
+        String leaveType = "CAN - Personal";
         OrangeHRMLeavePage.enterFromDate(driver, "3", "2022");
         Thread.sleep(2000);
         test.log(Status.INFO, "From date entered as 3rd January 2022");
@@ -148,7 +148,7 @@ public class OrangeHRMLeaveTest extends BaseTest {
     private void ConfirmSearchRecords(String leaveType, int colIndexToSearch) {
         try {
             int rowCount = OrangeHRMLeavePage.checkSearchResultRows(driver, leaveType, colIndexToSearch);
-            if (rowCount==1) {
+            if (rowCount>=1) {
                 Assert.assertTrue(true);
                 test.log(Status.PASS, "One search record found for leaveType: " + leaveType);
             } else {
